@@ -11,7 +11,7 @@ import SwiftUI
 struct CLMVDexApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+                ContentView()
         }
     }
 }
