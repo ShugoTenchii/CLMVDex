@@ -19,13 +19,13 @@ struct MyCard<Content: View>: View {
     }
 
     var body: some View {
-        VStack {
+        VStack () {
             content
-                .frame(alignment: .center)
         }
         .padding(.horizontal, 0)
         .padding(.vertical, 30)
-        .frame(maxWidth: (frameWidth != nil && frameWidth! <= 0 ? .infinity-20 : frameWidth!), maxHeight: frameHeight)
+        .frame(maxWidth: .infinity, minHeight: frameHeight, maxHeight: frameHeight, alignment: .center)
+        .cornerRadius(30)
         .background(
             RoundedRectangle(cornerRadius: 30)
                 .fill(Color(EnumColor.background.rawValue))
@@ -35,10 +35,9 @@ struct MyCard<Content: View>: View {
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing)
                     , lineWidth: 2)
-                .shadow(color: Color(EnumColor.shadow1.rawValue), radius: 64, x: 32, y: 32)
-                .shadow(color: Color(EnumColor.shadow2.rawValue), radius: 64, x: -32, y: -32)
+                .shadow(color: Color(EnumColor.shadow2.rawValue), radius: 32, x: -32, y: -32)
+                .shadow(color: Color(EnumColor.shadow1.rawValue), radius: 32, x: 32, y: 32)
             
         )
     }
 }
-

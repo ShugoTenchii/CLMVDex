@@ -9,13 +9,15 @@ import SwiftUI
 
 struct MainMenu: View {
     var body: some View {
-        ZStack {
+        VStack {
+            Header()
             MyCard(frameWidth: 0, frameHeight: 320){
                 Image(systemName: "globe")
                     .imageScale(.large)
                     .foregroundStyle(.tint)
                 Text("Hello, world!")
             }
+            .padding(.horizontal, 12)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color("Background"))
