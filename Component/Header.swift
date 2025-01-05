@@ -13,10 +13,10 @@ struct Header: View {
     var body: some View {
         ZStack {
             HStack{
-                ClickableSVG(svgName: EnumAssets.pokeball.path) {
+                ClickableSVG(svgName: EnumAssets.pokeball.rawValue, height: 37.5, weight: 35.7) {
                     print("SVG cliqué !")
                 }
-                .frame(width: 100, height: 100)
+                Spacer()
                 ThemeToggle()
             }
         }

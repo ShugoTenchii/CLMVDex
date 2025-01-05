@@ -20,27 +20,12 @@ struct ThemeToggle: View {
                 .shadow(color: Color(EnumColor.shadow1.rawValue), radius: 10, x: 5, y: 5)
                 .shadow(color: Color(EnumColor.shadow2.rawValue), radius: 10, x: -5, y: -5)
 
-            // Contenu du toggle
-            HStack {
-                Image(EnumAssets.moon.path)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 15, height: 15)
-
-                Spacer()
-
-                Image(EnumAssets.sun.path)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 15, height: 15)
-            }
-            .padding(8)
-
+            
             // Bouton glissant
             Circle()
-                .fill(Color(EnumColor.background.rawValue))
+                .fill(Color(EnumColor.noBackground.rawValue))
                 .frame(width: 19, height: 19)
-                .offset(x: colorScheme == .dark ? 10 : -10)
+                .offset(x: colorScheme == .dark ? 11 : -11)
                 .shadow(color: Color(EnumColor.shadow1.rawValue), radius: 10, x: 5, y: 5)
                 .shadow(color: Color(EnumColor.shadow2.rawValue), radius: 10, x: -5, y: -5)
                 .gesture(
@@ -51,6 +36,20 @@ struct ThemeToggle: View {
                             }
                         }
                 )
+            
+            // Contenu du toggle
+            HStack {
+                Image(EnumAssets.moon.rawValue)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 15, height: 15)
+
+                Image(EnumAssets.sun.rawValue)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 15, height: 15)
+            }
+            .padding(8)
         }
         .padding()
     }

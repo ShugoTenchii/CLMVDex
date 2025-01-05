@@ -9,14 +9,16 @@ import SwiftUI
 
 struct ClickableSVG: View {
     let svgName: String
+    let height: CGFloat
+    let weight: CGFloat
     var action: () -> Void
 
     var body: some View {
         Button(action: action) {
-            Image(svgName ?? EnumAssets.pokeball.path)
+            Image(svgName ?? EnumAssets.pokeball.rawValue)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 100, height: 100)
+                .frame(width: height, height: weight)
                 .padding()
         }
         .buttonStyle(PlainButtonStyle())
