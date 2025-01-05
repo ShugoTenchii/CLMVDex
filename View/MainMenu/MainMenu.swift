@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct MainMenu: View {
     var body: some View {
         ZStack {
             MyCard(frameWidth: 0, frameHeight: 320){
@@ -24,5 +24,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    MainMenu()
 }
