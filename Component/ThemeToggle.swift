@@ -17,17 +17,19 @@ struct ThemeToggle: View {
             RoundedRectangle(cornerRadius: 17)
                 .fill(Color(EnumColor.background.rawValue))
                 .frame(width: 56, height: 29)
-                .shadow(color: Color(EnumColor.shadow1.rawValue), radius: 10, x: 5, y: 5)
+                .shadow(color: Color(EnumColor.shadow3.rawValue), radius: 10, x: 5, y: 5)
                 .shadow(color: Color(EnumColor.shadow2.rawValue), radius: 10, x: -5, y: -5)
-
+                .foregroundStyle(
+                    .blue.gradient
+                        .shadow(.inner(color: Color(EnumColor.shadow3.rawValue), radius: 10, x: 5, y: 5))
+                        .shadow(.inner(color: Color(EnumColor.shadow2.rawValue), radius: 10, x: -5, y: -5))
+                )
             
             // Bouton glissant
             Circle()
                 .fill(Color(EnumColor.noBackground.rawValue))
                 .frame(width: 19, height: 19)
                 .offset(x: colorScheme == .dark ? 11 : -11)
-                .shadow(color: Color(EnumColor.shadow1.rawValue), radius: 10, x: 5, y: 5)
-                .shadow(color: Color(EnumColor.shadow2.rawValue), radius: 10, x: -5, y: -5)
                 .gesture(
                     DragGesture(minimumDistance: 0)
                         .onEnded { _ in

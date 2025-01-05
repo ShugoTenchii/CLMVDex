@@ -19,6 +19,7 @@ struct Header: View {
                 Spacer()
                 ThemeToggle()
             }
+            .background(Color("Background"))
         }
     }
 }
