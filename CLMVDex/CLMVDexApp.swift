@@ -12,17 +12,21 @@ struct CLMVDexApp: App {
     @StateObject private var themeManager = ThemeManager()
     var body: some Scene {
         WindowGroup {
-            ZStack(alignment: .top) {
-                MainMenu()
-                    .environmentObject(themeManager)
-                    .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
-                    .padding(.top, 50)
-                
-                Header()
-                    .environmentObject(themeManager)
-                    .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
-            }
-        }
+                   ZStack {
+                       Color("Background")
+                           .edgesIgnoringSafeArea(.all)
+
+                       VStack {
+                           Header()
+                               .environmentObject(themeManager)
+                               .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
+                           MainMenu()
+                               .environmentObject(themeManager)
+                               .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
+                       }
+                       .padding(.horizontal, 12)
+                   }
+               }
     }
 }
 

@@ -51,9 +51,7 @@ struct ThemeToggle: View {
                     .scaledToFit()
                     .frame(width: 15, height: 15)
             }
-            .padding(8)
         }
-        .padding()
     }
 }
 

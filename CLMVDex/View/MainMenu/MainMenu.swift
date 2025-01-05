@@ -16,9 +16,9 @@ struct MainMenu: View {
                     .foregroundStyle(.tint)
                 Text("Hello, world!")
             }
-            .padding(.horizontal, 12)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .padding(.top, 15)
         .background(Color("Background"))
         .edgesIgnoringSafeArea(.all)
     }

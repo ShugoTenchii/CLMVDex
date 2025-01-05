@@ -19,7 +19,6 @@ struct ClickableSVG: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: height, height: weight)
-                .padding()
         }
         .buttonStyle(PlainButtonStyle())
     }
