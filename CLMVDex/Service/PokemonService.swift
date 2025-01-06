@@ -8,44 +8,47 @@
 import PokemonAPI
 import Foundation
 
-protocol PokemonServiceProtocol {
-    func fetchPokemonList() async throws -> [PKMNamedAPIResource<PKMPokemon>]
-    func fetchPokemon(by name: String) async throws -> PKMPokemon
-    func searchPokemon(by query: String) async throws -> [PKMNamedAPIResource<PKMPokemon>]
-    func savePokemon(name: String) async throws -> Pokemon
-}
-
-class PokemonService: PokemonServiceProtocol {
+class PokemonService {
     private let api = PokemonAPI()
 
-    /// Récupère la liste complète des Pokémon depuis l'API.
-    func fetchPokemonList() async throws -> [PKMNamedAPIResource<PKMPokemon>] {
-        // Assurez-vous que cette méthode retourne des PKMNamedAPIResource<PKMPokemon>
-        let pagedResult = try await api.pokemonService.fetchPokemonList(paginationState: .initial(pageLimit: 100))
-        guard let results = pagedResult.results as? [PKMNamedAPIResource<PKMPokemon>] else {
-            throw NSError(domain: "PokemonService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid type returned from API."])
+    /// Récupère la liste complète des Pokémon, paginée
+    func fetchAllPokemon() async throws -> [PKMNamedAPIResource<PKMPokemon>] {
+        var allPokemon: [PKMNamedAPIResource<PKMPokemon>] = []
+
+        // Charger la première page
+        var pagedResult = try await api.pokemonService.fetchPokemonList(paginationState: .initial(pageLimit: 100))
+
+        // Ajouter les résultats de la première page
+        if let results = pagedResult.results as? [PKMNamedAPIResource<PKMPokemon>] {
+            allPokemon.append(contentsOf: results)
         }
-        return results
+
+        // Parcourir les pages suivantes tant que hasNext est vrai
+        while pagedResult.hasNext {
+            pagedResult = try await api.pokemonService.fetchPokemonList(
+                paginationState: .continuing(pagedResult, .next)
+            )
+            if let results = pagedResult.results as? [PKMNamedAPIResource<PKMPokemon>] {
+                allPokemon.append(contentsOf: results)
+            }
+        }
+
+        return allPokemon
     }
 
-    /// Récupère les détails d'un Pokémon spécifique par son nom.
-    func fetchPokemon(by name: String) async throws -> PKMPokemon {
+    /// Récupère un Pokémon spécifique par son ID
+    func fetchPokemon(byId id: Int) async throws -> PKMPokemon {
+        return try await api.pokemonService.fetchPokemon(id)
+    }
+
+    /// Récupère un Pokémon spécifique par son nom
+    func fetchPokemon(byName name: String) async throws -> PKMPokemon {
         return try await api.pokemonService.fetchPokemon(name)
     }
 
-    /// Recherche des Pokémon dont le nom contient une sous-chaîne donnée.
+    /// Recherche des Pokémon par mot-clé
     func searchPokemon(by query: String) async throws -> [PKMNamedAPIResource<PKMPokemon>] {
-        let allPokemon = try await fetchPokemonList()
-        return allPokemon.filter { $0.name?.contains(query.lowercased()) ?? false }
-    }
-
-    /// Sauvegarde un Pokémon spécifique par son nom.
-    func savePokemon(name: String) async throws -> Pokemon {
-        let pokemon = try await fetchPokemon(by: name)
-        
-        // Simplifie les types pour n'en conserver qu'un seul (le premier)
-        let primaryType = pokemon.types?.first?.type?.name ?? "Unknown"
-        
-        return Pokemon(id: pokemon.id ?? 0, name: pokemon.name ?? "Unknown", type: primaryType)
+        let allPokemon = try await fetchAllPokemon()
+        return allPokemon.filter { $0.name?.lowercased().contains(query.lowercased()) ?? false }
     }
 }

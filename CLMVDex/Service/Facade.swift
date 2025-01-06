@@ -4,62 +4,42 @@
 //
 //  Created by ShugoTenchi on 06/01/2025.
 //
+
 import PokemonAPI
 
-
-
 class Facade {
-    private let service: PokemonServiceProtocol
-        
-    init(service: PokemonServiceProtocol = PokemonService()) {
-            self.service = service
-        }
+    private let service = PokemonService()
+    private let favoriteManager = FavoritePokemonManager()
     
-    static let shared = Facade()
+    /// Récupère la liste complète des Pokémon depuis l'API
+    func getAllPokemon() async throws -> [PKMNamedAPIResource<PKMPokemon>] {
+        return try await service.fetchAllPokemon()
+    }
     
-    private let pokemonService = PokemonService()
+    /// Recherche des Pokémon par nom ou partie de nom
+    func searchPokemon(by query: String) async throws -> [PKMNamedAPIResource<PKMPokemon>] {
+        return try await service.searchPokemon(by: query)
+    }
     
-    private var cachedPokemonList: [Pokemon]?
-    
-    /// Récupère la liste des noms des Pokémon.
-      func getPokemonList() async -> Result<[String], Error> {
-          do {
-              let pokemonList = try await service.fetchPokemonList()
-              let names = pokemonList.compactMap { $0.name }
-              return .success(names)
-          } catch {
-              return .failure(error)
-          }
-      }
-    
-    /// Récupère un Pokémon spécifique par son nom.
-        func getPokemon(by name: String) async -> Result<PKMPokemon, Error> {
-            do {
-                let pokemon = try await service.fetchPokemon(by: name)
-                return .success(pokemon)
-            } catch {
-                return .failure(error)
-            }
-        }
+    /// Ajoute un Pokémon aux favoris
+    func addPokemonToFavorites(byId id: Int) async throws {
+        let pokemon = try await service.fetchPokemon(byId: id)
+        favoriteManager.addFavorite(from: pokemon)
+    }
 
-        /// Recherche des Pokémon par un nom partiel.
-        func searchPokemon(by query: String) async -> Result<[String], Error> {
-            do {
-                let matchingPokemon = try await service.searchPokemon(by: query)
-                let names = matchingPokemon.compactMap { $0.name }
-                return .success(names)
-            } catch {
-                return .failure(error)
-            }
-        }
-
-        /// Sauvegarde un Pokémon récupéré par son nom.
-        func savePokemon(name: String) async -> Result<Pokemon, Error> {
-            do {
-                let pokemon = try await service.savePokemon(name: name)
-                return .success(pokemon)
-            } catch {
-                return .failure(error)
-            }
-        }
+    
+    /// Supprime un Pokémon des favoris
+    func removePokemonFromFavorites(byId id: Int) {
+        favoriteManager.removeFavorite(byId: id)
+    }
+    
+    /// Récupère la liste des favoris depuis le stockage local
+    func getFavorites() -> [FavoritePokemon] {
+        return favoriteManager.getFavorites()
+    }
+    
+    /// Récupère les détails d'un Pokémon favori via l'API
+    func getFavoriteDetails(byId id: Int) async throws -> PKMPokemon {
+        return try await service.fetchPokemon(byId: id)
+    }
 }
