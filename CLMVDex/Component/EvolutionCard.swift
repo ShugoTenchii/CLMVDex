@@ -10,10 +10,36 @@ import SwiftUI
 struct EvolutionCard: View {
     let asMega: Bool
     
+    init(asMega: Bool = false) { // Fournit une valeur par défaut
+        self.asMega = asMega
+    }
+    
     var body: some View {
-        HStack{
-            
+        VStack{
+            HStack{
+                MylittleCard(frameHeight: 114){
+                    Image(EnumAssets.pokeball.rawValue)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 90, height: 200)
+                }
+                MylittleCard(frameHeight: 114){
+                    Image(EnumAssets.pokeball.rawValue)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 90, height: 200)
+                }
+            }
+            if(asMega){
+                MylittleCard(frameHeight: 114){
+                    Image(EnumAssets.pokeball.rawValue)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 90, height: 200)
+                }
+            }
         }
-        .frame(width: .infinity, height: asMega ? 238 : 114)
+        .frame(height: asMega ? 238 : 114)
+        .padding(.vertical, 25)
     }
 }

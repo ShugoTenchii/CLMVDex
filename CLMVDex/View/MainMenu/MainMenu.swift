@@ -31,9 +31,10 @@ struct MainMenu: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 30)
-                
-                
             }
+            EvolutionCard(
+                asMega: false
+            )
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding(.top, 15)
