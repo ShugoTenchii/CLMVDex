@@ -19,18 +19,6 @@ struct SearchBar: View {
                 .onChange(of: searchText) { newValue in
                     onSearch(newValue)
                 }
-
-
-            if !searchText.isEmpty {
-                Button(action: {
-                    searchText = "" // Réinitialise le texte de recherche
-                    onSearch("") // Appelle la fonction avec une chaîne vide
-                }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(.gray)
-                }
-                .padding(.trailing, 10)
-            }
         }
         .frame(height: 43)
         .padding(.horizontal, 15)

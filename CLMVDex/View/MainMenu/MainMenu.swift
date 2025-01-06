@@ -9,8 +9,10 @@ import SwiftUI
 
 struct MainMenu: View {
     @Binding var path: [EnumPage]
+    @State private var filteredPokemonList: [Pokemon] = []
+    @State private var searchText: String = ""
+    @State private var pokemonId: Int = 1
     var pokemonFacade : Facade
-    var pokemonId = 1
     var body: some View {
         VStack {
             MyCard(frameWidth: 0, frameHeight: 320){
@@ -54,10 +56,14 @@ struct MainMenu: View {
             )
             Spacer()
             VStack{
-                SearchBar{ query in
-                    pokemonFacade.searchPokemon(name: query)
+                SearchBar{query in
+                    searchText = query
+                    filteredPokemonList = pokemonFacade.getPokemonList()
+                    updateFilteredList(query: query)
                 }
-                CarouselView(pokemonFacade: pokemonFacade)
+                CarouselView(pokemonList: filteredPokemonList){
+                    selectedId in pokemonId = selectedId
+                }
                     .padding(.top, 15)
             }
         }
@@ -66,6 +72,17 @@ struct MainMenu: View {
         .padding(.bottom, 20)
         .background(Color("Background"))
         .edgesIgnoringSafeArea(.all)
+        .onAppear {
+            filteredPokemonList = pokemonFacade.getPokemonList()
+        }
+    }
+    
+    private func updateFilteredList(query: String) {
+        if query.isEmpty {
+            filteredPokemonList = pokemonFacade.getPokemonList()
+        } else {
+            filteredPokemonList = pokemonFacade.searchPokemon(name: query) ?? []
+        }
     }
 }
 
