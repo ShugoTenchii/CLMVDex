@@ -8,6 +8,8 @@
 import PokemonAPI
 
 class Facade {
+    static let shared = Facade()
+    
     private let service = PokemonService()
     private let favoriteManager = FavoritePokemonManager()
     

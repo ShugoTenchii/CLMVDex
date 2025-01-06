@@ -16,7 +16,7 @@ class PokemonService {
         var allPokemon: [PKMNamedAPIResource<PKMPokemon>] = []
 
         // Charger la première page
-        var pagedResult = try await api.pokemonService.fetchPokemonList(paginationState: .initial(pageLimit: 100))
+        var pagedResult = try await api.pokemonService.fetchPokemonList(paginationState: .initial(pageLimit: 100), )
 
         // Ajouter les résultats de la première page
         if let results = pagedResult.results as? [PKMNamedAPIResource<PKMPokemon>] {
@@ -33,7 +33,14 @@ class PokemonService {
             }
         }
 
-        return allPokemon
+        var test = allPokemon.sorted { a, b in
+                let idA = a.url?.pokemonIdFromURL() ?? Int.max
+                let idB = b.url?.pokemonIdFromURL() ?? Int.max
+                return idA < idB
+            }
+        
+        print(test);
+        return test;
     }
 
     /// Récupère un Pokémon spécifique par son ID
