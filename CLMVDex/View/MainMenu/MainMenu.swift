@@ -15,28 +15,7 @@ struct MainMenu: View {
     var pokemonFacade : Facade
     var body: some View {
         VStack {
-            MyCard(frameWidth: 0, frameHeight: 320){
-                HStack{
-                    Text(pokemonFacade.getPokemon(id: pokemonId)?.name ?? "None")
-                        .font(Font.custom("Jost", size: 20))
-                        
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 30)
-                Spacer()
-                Image(pokemonFacade.getPokemon(id: pokemonId)?.image ?? EnumAssets.pokeball.rawValue)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200, height: 200)
-                Spacer()
-                HStack{
-                    Spacer()
-                    TypesView(Type1: pokemonFacade.getPokemon(id: pokemonId)?.type1 ?? "1", Type2: pokemonFacade.getPokemon(id: pokemonId)?.type2 ?? "1")
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 30)
-            }
+            FirstCard()
             Spacer()
             HStack{
                 Spacer()
@@ -66,6 +45,7 @@ struct MainMenu: View {
                 }
                     .padding(.top, 15)
             }
+            .padding(.top, 15)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding(.top, 15)
@@ -75,6 +55,31 @@ struct MainMenu: View {
         .onAppear {
             filteredPokemonList = pokemonFacade.getPokemonList()
         }
+    }
+    
+    private func FirstCard() -> some View {
+            MyCard(frameWidth: 0, frameHeight: 320){
+                HStack{
+                    Text(String(pokemonFacade.getPokemon(id: pokemonId)?.id ?? 0) + " - " + pokemonFacade.getPokemon(id: pokemonId)!.name)
+                        .font(Font.custom("Jost", size: 20))
+                        
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 30)
+                Spacer()
+                Image(pokemonFacade.getPokemon(id: pokemonId)?.image ?? EnumAssets.pokeball.rawValue)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                Spacer()
+                HStack{
+                    Spacer()
+                    TypesView(Type1: pokemonFacade.getPokemon(id: pokemonId)?.type1 ?? "1", Type2: pokemonFacade.getPokemon(id: pokemonId)?.type2 ?? "1")
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 30)
+            }
     }
     
     private func updateFilteredList(query: String) {

@@ -26,7 +26,7 @@ struct SearchBar: View {
             RoundedRectangle(cornerRadius: 30)
                 .fill(Color(EnumColor.background.rawValue))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 30)
+                    RoundedRectangle(cornerRadius: 17)
                         .stroke(
                             LinearGradient(
                                 gradient: Gradient(colors: [Color(EnumColor.strokes2.rawValue), Color(EnumColor.strokes1.rawValue)]),
