@@ -22,8 +22,7 @@ struct MyCard<Content: View>: View {
         VStack () {
             content
         }
-        .padding(.horizontal, 0)
-        .padding(.vertical, 30)
+        .padding(.vertical, 25)
         .frame(maxWidth: .infinity, minHeight: frameHeight, maxHeight: frameHeight, alignment: .center)
         .cornerRadius(30)
         .background(
