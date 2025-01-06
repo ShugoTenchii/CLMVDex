@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A17BA83F2D2C295200489D5C /* PokemonAPI in Frameworks */ = {isa = PBXBuildFile; productRef = A17BA83E2D2C295200489D5C /* PokemonAPI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		CCBF314F2D2B4B870006384B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,9 +33,22 @@
 		CCBF31582D2B4B870006384B /* CLMVDexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CLMVDexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A17BA8392D2C27DD00489D5C /* Exceptions for "CLMVDex" folder in "CLMVDex" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = CCBF313D2D2B4B850006384B /* CLMVDex */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CCBF31402D2B4B850006384B /* CLMVDex */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A17BA8392D2C27DD00489D5C /* Exceptions for "CLMVDex" folder in "CLMVDex" target */,
+			);
 			path = CLMVDex;
 			sourceTree = "<group>";
 		};
@@ -42,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A17BA83F2D2C295200489D5C /* PokemonAPI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +118,7 @@
 			);
 			name = CLMVDex;
 			packageProductDependencies = (
+				A17BA83E2D2C295200489D5C /* PokemonAPI */,
 			);
 			productName = CLMVDex;
 			productReference = CCBF313E2D2B4B850006384B /* CLMVDex.app */;
@@ -177,6 +196,9 @@
 			);
 			mainGroup = CCBF31352D2B4B850006384B;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A17BA8372D2C1FAD00489D5C /* XCRemoteSwiftPackageReference "PokemonAPI" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CCBF313F2D2B4B850006384B /* Products */;
 			projectDirPath = "";
@@ -381,6 +403,7 @@
 				DEVELOPMENT_TEAM = X53XNAT85Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CLMVDex/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -410,6 +433,7 @@
 				DEVELOPMENT_TEAM = X53XNAT85Z;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CLMVDex/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -540,6 +564,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A17BA8372D2C1FAD00489D5C /* XCRemoteSwiftPackageReference "PokemonAPI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kinkofer/PokemonAPI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A17BA83E2D2C295200489D5C /* PokemonAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A17BA8372D2C1FAD00489D5C /* XCRemoteSwiftPackageReference "PokemonAPI" */;
+			productName = PokemonAPI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CCBF31362D2B4B850006384B /* Project object */;
 }
