@@ -19,7 +19,7 @@ class Facade {
         return cachedPokemonList!
     }
     
-    func getPokemon(name: String? = nil, id: Int? = nil) -> Pokemon? {
+    func getPokemon(name: String? = nil, id: Int? = 0) -> Pokemon? {
         let pokemonList = getPokemonList()
         return pokemonService.findPokemon(byName: name, orID: id, in: pokemonList)
     }

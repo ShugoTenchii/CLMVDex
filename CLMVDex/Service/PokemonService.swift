@@ -8,10 +8,10 @@
 class PokemonService {
     func loadPokemonList() -> [Pokemon] {
         return [
-            Pokemon(id: 1, name: "Bulbasaur", type: "Grass"),
-            Pokemon(id: 2, name: "Ivysaur", type: "Grass"),
-            Pokemon(id: 3, name: "Charmander", type: "Fire"),
-            Pokemon(id: 4, name: "Pikachu", type: "Electric")
+            Pokemon(id: 1, name: "Lucario", image: EnumAssets.pokeball.rawValue, type1: "2", type2: "9", asMega: false),
+            Pokemon(id: 2, name: "Bulbasaur", image: "", type1: "12", type2: "", asMega: false),
+            Pokemon(id: 3, name: "Charmander", image: "", type1: "3", type2: "1", asMega: false),
+            Pokemon(id: 4, name: "Pikachu", image: "", type1: "4", type2: "", asMega: false)
         ]
     }
     
