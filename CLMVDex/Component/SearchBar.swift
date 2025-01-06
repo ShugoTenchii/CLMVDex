@@ -25,19 +25,14 @@ struct SearchBar: View {
         .background(
             RoundedRectangle(cornerRadius: 30)
                 .fill(Color(EnumColor.background.rawValue))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 17)
-                        .stroke(
-                            LinearGradient(
-                                gradient: Gradient(colors: [Color(EnumColor.strokes2.rawValue), Color(EnumColor.strokes1.rawValue)]),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ),
-                            lineWidth: 1
-                        )
-                )
-                .shadow(color: Color(EnumColor.shadow3.rawValue), radius: 10, x: 5, y: 5)
-                .shadow(color: Color(EnumColor.shadow2.rawValue), radius: 10, x: -5, y: -5)
+                .stroke(
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color(EnumColor.strokes2.rawValue), Color(EnumColor.strokes1.rawValue)]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    lineWidth: 1
+                ) 
         )
     }
 }

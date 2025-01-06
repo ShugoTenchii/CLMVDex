@@ -29,6 +29,7 @@ struct CLMVDexApp: App {
                                         .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
                                 }
                                 .padding(.horizontal, 12)
+                                .padding(.top, 20)
                             }
                             .navigationDestination(for: EnumPage.self) { page in
                                 switch page {

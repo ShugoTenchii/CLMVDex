@@ -43,12 +43,12 @@ struct MainMenu: View {
                 CarouselView(pokemonList: filteredPokemonList){
                     selectedId in pokemonId = selectedId
                 }
-                    .padding(.top, 15)
+                .padding(.top, 15)
             }
             .padding(.top, 15)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding(.top, 15)
+        .padding(.top, 10)
         .padding(.bottom, 20)
         .background(Color("Background"))
         .edgesIgnoringSafeArea(.all)
@@ -86,7 +86,7 @@ struct MainMenu: View {
         if query.isEmpty {
             filteredPokemonList = pokemonFacade.getPokemonList()
         } else {
-            filteredPokemonList = pokemonFacade.searchPokemon(name: query) ?? []
+            filteredPokemonList = pokemonFacade.searchPokemon(name: query)
         }
     }
 }

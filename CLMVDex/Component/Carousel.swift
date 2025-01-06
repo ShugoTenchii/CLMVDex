@@ -19,6 +19,7 @@ struct CarouselView: View {
                                         .font(Font.custom("Jost", size: 16))
                                         .foregroundColor(Color(EnumColor.noBackground.rawValue))
                                         .padding(.top, 5)
+                                        .padding(.bottom, 20)
                 } else {
                     ForEach(pokemonList, id: \.id) { pokemon in
                         pokemonCard(for: pokemon)
@@ -26,7 +27,6 @@ struct CarouselView: View {
                 }
             }
             .padding(.horizontal, 12)
-            .edgesIgnoringSafeArea(.all)
         }
     }
     private func pokemonCard(for pokemon : Pokemon) -> some View{
@@ -38,7 +38,6 @@ struct CarouselView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 90, height: 90)
-                    .foregroundColor(Color(EnumColor.noBackground.rawValue))
             }
             }
             Text(String(pokemon.id) + " - " + pokemon.name)
