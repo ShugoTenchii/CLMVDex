@@ -8,28 +8,41 @@
 import SwiftUI
 
 struct CarouselView: View {
-    var pokemonFacade : Facade
+    var pokemonList : [Pokemon]
+    var onSelect: (Int) -> Void
+    
     var body: some View {
-        var pokemonList = pokemonFacade.getPokemonList()
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 15) {
-                ForEach(pokemonList, id: \.id) { card in
-                    VStack {
-                        MylittleCard(frameWidth: 90, frameHeight: 90) {
-                            Image(EnumAssets.pokeball.rawValue)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 90, height: 90)
-                                .foregroundColor(Color(EnumColor.noBackground.rawValue))
-                        }
-                        Text(card.name)
-                            .font(Font.custom("Jost", size: 12))
+                if pokemonList.isEmpty {
+                                    Text("Aucun résultat trouvé")
+                                        .font(Font.custom("Jost", size: 16))
+                                        .foregroundColor(Color(EnumColor.noBackground.rawValue))
+                                        .padding(.top, 5)
+                                        .padding(.bottom, 20)
+                } else {
+                    ForEach(pokemonList, id: \.id) { pokemon in
+                        pokemonCard(for: pokemon)
                     }
-                    .frame(width: 90)
                 }
             }
             .padding(.horizontal, 12)
-            .edgesIgnoringSafeArea(.all)
         }
+    }
+    private func pokemonCard(for pokemon : Pokemon) -> some View{
+        VStack {
+            Button(action: {
+                onSelect(pokemon.id) // Retourne l'ID du Pokémon sélectionné
+            }) {MylittleCard(frameWidth: 90, frameHeight: 90) {
+                Image(EnumAssets.pokeball.rawValue)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 90, height: 90)
+            }
+            }
+            Text(String(pokemon.id) + " - " + pokemon.name)
+                .font(Font.custom("Jost", size: 12))
+        }
+        .frame(width: 90)
     }
 }

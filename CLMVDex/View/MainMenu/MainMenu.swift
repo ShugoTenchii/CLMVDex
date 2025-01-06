@@ -9,32 +9,13 @@ import SwiftUI
 
 struct MainMenu: View {
     @Binding var path: [EnumPage]
+    @State private var filteredPokemonList: [Pokemon] = []
+    @State private var searchText: String = ""
+    @State private var pokemonId: Int = 1
     var pokemonFacade : Facade
-    var pokemonId = 1
     var body: some View {
         VStack {
-            MyCard(frameWidth: 0, frameHeight: 320){
-                HStack{
-                    Text(pokemonFacade.getPokemon(id: pokemonId)?.name ?? "None")
-                        .font(Font.custom("Jost", size: 20))
-                        
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 30)
-                Spacer()
-                Image(pokemonFacade.getPokemon(id: pokemonId)?.image ?? EnumAssets.pokeball.rawValue)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200, height: 200)
-                Spacer()
-                HStack{
-                    Spacer()
-                    TypesView(Type1: pokemonFacade.getPokemon(id: pokemonId)?.type1 ?? "1", Type2: pokemonFacade.getPokemon(id: pokemonId)?.type2 ?? "1")
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 30)
-            }
+            FirstCard()
             Spacer()
             HStack{
                 Spacer()
@@ -54,18 +35,59 @@ struct MainMenu: View {
             )
             Spacer()
             VStack{
-                SearchBar{ query in
-                    pokemonFacade.searchPokemon(name: query)
+                SearchBar{query in
+                    searchText = query
+                    filteredPokemonList = pokemonFacade.getPokemonList()
+                    updateFilteredList(query: query)
                 }
-                CarouselView(pokemonFacade: pokemonFacade)
-                    .padding(.top, 15)
+                CarouselView(pokemonList: filteredPokemonList){
+                    selectedId in pokemonId = selectedId
+                }
+                .padding(.top, 15)
             }
+            .padding(.top, 15)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding(.top, 15)
+        .padding(.top, 10)
         .padding(.bottom, 20)
         .background(Color("Background"))
         .edgesIgnoringSafeArea(.all)
+        .onAppear {
+            filteredPokemonList = pokemonFacade.getPokemonList()
+        }
+    }
+    
+    private func FirstCard() -> some View {
+            MyCard(frameWidth: 0, frameHeight: 320){
+                HStack{
+                    Text(String(pokemonFacade.getPokemon(id: pokemonId)?.id ?? 0) + " - " + pokemonFacade.getPokemon(id: pokemonId)!.name)
+                        .font(Font.custom("Jost", size: 20))
+                        
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 30)
+                Spacer()
+                Image(pokemonFacade.getPokemon(id: pokemonId)?.image ?? EnumAssets.pokeball.rawValue)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                Spacer()
+                HStack{
+                    Spacer()
+                    TypesView(Type1: pokemonFacade.getPokemon(id: pokemonId)?.type1 ?? "1", Type2: pokemonFacade.getPokemon(id: pokemonId)?.type2 ?? "1")
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 30)
+            }
+    }
+    
+    private func updateFilteredList(query: String) {
+        if query.isEmpty {
+            filteredPokemonList = pokemonFacade.getPokemonList()
+        } else {
+            filteredPokemonList = pokemonFacade.searchPokemon(name: query)
+        }
     }
 }
 
