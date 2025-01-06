@@ -12,10 +12,12 @@ struct MyButtonStyle: ButtonStyle {
         configuration.label
             .padding(30)
             .background(
-                Circle()
+                RoundedRectangle(cornerRadius: 20)
                     .fill(Color(EnumColor.background.rawValue))
-                    .shadow(color: Color(EnumColor.shadow1.rawValue), radius: 18, x: 9, y: 9)
-                    .shadow(color: Color(EnumColor.shadow2.rawValue), radius: 18, x: -9, y: -9)
+                    .shadow(color: Color(EnumColor.shadow2.rawValue), radius: 9, x: -9, y: -9)
+                    .shadow(color: Color(EnumColor.shadow1.rawValue), radius: 9, x: 9, y: 9)
+                    .frame(width: 55, height: 55, alignment: .center)
+
             )
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
     }

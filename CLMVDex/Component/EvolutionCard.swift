@@ -23,6 +23,7 @@ struct EvolutionCard: View {
                         .scaledToFit()
                         .frame(width: 90, height: 200)
                 }
+                Spacer()
                 MylittleCard(frameHeight: 114){
                     Image(EnumAssets.pokeball.rawValue)
                         .resizable()
@@ -40,6 +41,5 @@ struct EvolutionCard: View {
             }
         }
         .frame(height: asMega ? 238 : 114)
-        .padding(.vertical, 25)
     }
 }
