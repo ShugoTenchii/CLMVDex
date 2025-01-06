@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainMenu: View {
+    @Binding var path: [EnumPage]
     var pokemonFacade : Facade
     var pokemonId = 1
     var body: some View {
@@ -52,8 +53,12 @@ struct MainMenu: View {
                 asMega: pokemonFacade.getPokemon(id: pokemonId)?.asMega ?? false
             )
             Spacer()
-            SearchBar{ query in
-                pokemonFacade.searchPokemon(name: query)
+            VStack{
+                SearchBar{ query in
+                    pokemonFacade.searchPokemon(name: query)
+                }
+                CarouselView(pokemonFacade: pokemonFacade)
+                    .padding(.top, 15)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)

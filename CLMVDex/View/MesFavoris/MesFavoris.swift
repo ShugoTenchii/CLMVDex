@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MesFavoris: View {
+    @Binding var path: [EnumPage]
     var pokemonFacade : Facade
     var body: some View {
         var pokemonList = pokemonFacade.getPokemonList()
