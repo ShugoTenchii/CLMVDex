@@ -11,10 +11,17 @@ struct MainMenu: View {
     var body: some View {
         VStack {
             MyCard(frameWidth: 0, frameHeight: 320){
+                HStack{
+                    Text("448 - Lucario")
+                }
+                Spacer()
                 Image(systemName: "globe")
                     .imageScale(.large)
                     .foregroundStyle(.tint)
-                Text("Hello, world!")
+                Spacer()
+                HStack{
+                    
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
