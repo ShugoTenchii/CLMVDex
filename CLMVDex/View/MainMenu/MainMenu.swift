@@ -13,14 +13,17 @@ struct MainMenu: View {
             MyCard(frameWidth: 0, frameHeight: 320){
                 HStack{
                     Text("448 - Lucario")
+                        .font(Font.custom("Jost", size: 20))
+                        
                     Spacer()
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 30)
                 Spacer()
-                Image(systemName: "globe")
-                    .imageScale(.large)
-                    .foregroundStyle(.tint)
+                Image(EnumAssets.pokeball.rawValue)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
                 Spacer()
                 HStack{
                     Spacer()
@@ -28,6 +31,8 @@ struct MainMenu: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 30)
+                
+                
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
