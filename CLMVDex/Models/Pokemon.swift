@@ -8,5 +8,8 @@
 struct Pokemon : Codable {
     let id: Int
     let name: String
-    let type: String
+    let image: String?
+    let type1: String
+    let type2: String?
+    let asMega: Bool
 }

@@ -17,8 +17,6 @@ struct ThemeToggle: View {
             RoundedRectangle(cornerRadius: 17)
                 .fill(Color(EnumColor.background.rawValue))
                 .frame(width: 56, height: 29)
-                .shadow(color: Color(EnumColor.shadow3.rawValue), radius: 10, x: 5, y: 5)
-                .shadow(color: Color(EnumColor.shadow2.rawValue), radius: 10, x: -5, y: -5)
                 .foregroundStyle(
                     .blue.gradient
                         .shadow(.inner(color: Color(EnumColor.shadow3.rawValue), radius: 10, x: 5, y: 5))

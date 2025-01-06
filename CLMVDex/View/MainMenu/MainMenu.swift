@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct MainMenu: View {
+    @Binding var path: [EnumPage]
+    var pokemonFacade : Facade
+    var pokemonId = 1
     var body: some View {
         VStack {
             MyCard(frameWidth: 0, frameHeight: 320){
                 HStack{
-                    Text("448 - Lucario")
+                    Text(pokemonFacade.getPokemon(id: pokemonId)?.name ?? "None")
                         .font(Font.custom("Jost", size: 20))
                         
                     Spacer()
@@ -20,29 +23,49 @@ struct MainMenu: View {
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 30)
                 Spacer()
-                Image(EnumAssets.pokeball.rawValue)
+                Image(pokemonFacade.getPokemon(id: pokemonId)?.image ?? EnumAssets.pokeball.rawValue)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 200, height: 200)
                 Spacer()
                 HStack{
                     Spacer()
-                    TypesView(Type1: "2", Type2: "9")
+                    TypesView(Type1: pokemonFacade.getPokemon(id: pokemonId)?.type1 ?? "1", Type2: pokemonFacade.getPokemon(id: pokemonId)?.type2 ?? "1")
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.horizontal, 30)
             }
+            Spacer()
+            HStack{
+                Spacer()
+                Button(action: {
+                    print("Ajouter au Favoris")
+                }) {
+                    Image(EnumAssets.add.rawValue)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 30)
+                }
+                .buttonStyle(MyButtonStyle())
+            }
+            Spacer()
             EvolutionCard(
-                asMega: false
+                asMega: pokemonFacade.getPokemon(id: pokemonId)?.asMega ?? false
             )
+            Spacer()
+            VStack{
+                SearchBar{ query in
+                    pokemonFacade.searchPokemon(name: query)
+                }
+                CarouselView(pokemonFacade: pokemonFacade)
+                    .padding(.top, 15)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding(.top, 15)
+        .padding(.bottom, 20)
         .background(Color("Background"))
         .edgesIgnoringSafeArea(.all)
     }
 }
 
-#Preview {
-    MainMenu()
-}
