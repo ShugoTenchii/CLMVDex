@@ -11,24 +11,34 @@ import SwiftUI
 struct CLMVDexApp: App {
     @StateObject private var themeManager = ThemeManager()
     private var pokemonFacade = Facade.shared
+    @State private var path: [EnumPage] = []
     var body: some Scene {
         WindowGroup {
-            ZStack {
-                Color("Background")
-                    .edgesIgnoringSafeArea(.all)
-                
-                NavigationView {
-                    VStack {
-                        Header(pokemonFacade: pokemonFacade)
-                            .environmentObject(themeManager)
-                            .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
-                        MainMenu(pokemonFacade: pokemonFacade)
-                            .environmentObject(themeManager)
-                            .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
-                    }
-                    .padding(.horizontal, 12)
-                }
-            }
+            NavigationStack(path: $path) {
+                            ZStack {
+                                Color("Background")
+                                    .edgesIgnoringSafeArea(.all)
+
+                                VStack {
+                                    Header(pokemonFacade: pokemonFacade, path: $path) // Passe la pile à Header
+                                        .environmentObject(themeManager)
+                                        .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
+                                    
+                                    MainMenu(path: $path, pokemonFacade: pokemonFacade) // Passe la pile à MainMenu
+                                        .environmentObject(themeManager)
+                                        .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
+                                }
+                                .padding(.horizontal, 12)
+                            }
+                            .navigationDestination(for: EnumPage.self) { page in
+                                switch page {
+                                case .mainMenu:
+                                    MainMenu(path: $path, pokemonFacade: pokemonFacade)
+                                case .mesFavoris:
+                                    MesFavoris(path: $path, pokemonFacade: pokemonFacade)
+                                }
+                            }
+                        }
         }
     }
 }
