@@ -10,7 +10,8 @@ import SwiftUI
 struct MyButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .padding(30)
+            .padding(.vertical, 12)
+            .padding(.horizontal, 12)
             .background(
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color(EnumColor.background.rawValue))
