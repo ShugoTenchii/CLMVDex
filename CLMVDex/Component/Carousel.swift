@@ -38,20 +38,15 @@ struct CarouselView: View {
     private func pokemonCard(for pokemon: PKMPokemon) -> some View {
         VStack {
             Button(action: {
-                onSelect(pokemon) // Retourne l'objet PKMPokemon sélectionné
+                onSelect(pokemon)
             }) {
                 MylittleCard(frameWidth: 90, frameHeight: 90) {
-//                    Image(EnumAssets.pokeball.rawValue)
-//                        .resizable()
                     AsyncImage(url: URL(string: pokemon.sprites?.frontDefault ?? ""))
                         .scaledToFit()
                         .frame(width: 87, height: 87)
                 }
                 .shadow(color: Color(EnumColor.shadow2.rawValue), radius: 9, x: -9, y: -9)
                 .shadow(color: Color(EnumColor.shadow1.rawValue), radius: 9, x: 9, y: 9)
-                AsyncImage(url: URL(string: pokemon.sprites?.frontDefault ?? ""))
-                    .scaledToFit()
-                    .frame(width: 90, height: 90)
             }
             Text("\(pokemon.id ?? 0) - \(pokemon.name ?? "Inconnu")")
                 .font(Font.custom("Jost", size: 12))
