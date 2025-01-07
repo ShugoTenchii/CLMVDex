@@ -10,25 +10,33 @@ import PokemonAPI
 class Facade {
     static let shared = Facade()
     
+//    private let cache = PokemonCache()
     private let service = PokemonService()
     private let favoriteManager = FavoritePokemonManager()
     
     /// Récupère la liste complète des Pokémon depuis l'API
-    func getAllPokemon() async throws -> [PKMNamedAPIResource<PKMPokemon>] {
+    func getAllPokemon() async throws -> [PKMPokemon] {
         return try await service.fetchAllPokemon()
     }
     
     /// Recherche des Pokémon par nom ou partie de nom
-    func searchPokemon(by query: String) async throws -> [PKMNamedAPIResource<PKMPokemon>] {
-        return try await service.searchPokemon(by: query)
+    func searchPokemon(by query: String, existingPokemon: [PKMPokemon]) async throws -> [PKMPokemon] {
+        return await service.searchPokemon(by: query, in: existingPokemon)
     }
+    
+//    func isCacheUpToDate(expectedCount: Int) -> Bool {
+//        return cache.isCacheUpToDate(expectedCount: expectedCount)
+//    }
+//    
+//    func clearCache() {
+//        cache.clearCache()
+//    }
     
     /// Ajoute un Pokémon aux favoris
     func addPokemonToFavorites(byId id: Int) async throws {
         let pokemon = try await service.fetchPokemon(byId: id)
         favoriteManager.addFavorite(from: pokemon)
     }
-
     
     /// Supprime un Pokémon des favoris
     func removePokemonFromFavorites(byId id: Int) {
@@ -44,4 +52,9 @@ class Facade {
     func getFavoriteDetails(byId id: Int) async throws -> PKMPokemon {
         return try await service.fetchPokemon(byId: id)
     }
+    
+    func getPaginatedPokemon(offset: Int, limit: Int) async throws -> [PKMPokemon] {
+        return try await service.fetchPokemonByPage(offset: offset, limit: limit)
+    }
+
 }

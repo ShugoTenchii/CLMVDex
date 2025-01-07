@@ -10,6 +10,8 @@ import PokemonAPI
 
 struct MainMenu: View {
     @Binding var path: [EnumPage]
+    @State private var currentOffset = 0
+    @State private var isLoading = false
     @State private var allPokemonList: [PKMPokemon] = [] // Liste complète de PKMPokemon
     @State private var filteredPokemonList: [PKMPokemon] = [] // Liste filtrée de PKMPokemon
     @State private var selectedPokemon: PKMPokemon? // Pokémon sélectionné pour la grande carte
@@ -62,11 +64,15 @@ struct MainMenu: View {
                     }
                 }
 
-                CarouselView(pokemonList: filteredPokemonList) { pokemon in
+                CarouselView(pokemonList: filteredPokemonList, onSelect: { pokemon in
                     Task {
                         await selectPokemon(pokemon: pokemon)
                     }
-                }
+                }, onLoadMore: {
+                    Task {
+                        await loadMorePokemon() // Charge la prochaine page
+                    }
+                })
                 .padding(.top, 15)
             }
             .padding(.top, 15)
@@ -115,16 +121,21 @@ struct MainMenu: View {
         }
     }
 
+
+
     private func loadInitialPokemon() async {
+        guard allPokemonList.isEmpty else { return } // Ne recharge pas si la liste existe déjà
+        
         do {
-            let pokemonResources = try await pokemonFacade.getAllPokemon()
-            let fullDetails = try await fetchPokemonDetails(from: pokemonResources).sorted{$0.id! < $1.id!}
-
+            print("Chargement initial des Pokémon...")
+            let pokemonResources = try await pokemonFacade.getPaginatedPokemon(offset: 0, limit: 20)
             await MainActor.run {
-                allPokemonList = fullDetails
-                filteredPokemonList = fullDetails
+                allPokemonList = pokemonResources
+                filteredPokemonList = pokemonResources
+                currentOffset = pokemonResources.count // Met à jour avec le nombre chargé
+                print("Initial offset : \(currentOffset)")
 
-                if let firstPokemon = fullDetails.first {
+                if let firstPokemon = pokemonResources.first {
                     selectedPokemon = firstPokemon
                 }
             }
@@ -133,6 +144,41 @@ struct MainMenu: View {
         }
     }
 
+
+    private func loadMorePokemon() async {
+        guard !isLoading else {
+            print("Chargement déjà en cours")
+            return
+        }
+        isLoading = true
+        defer { isLoading = false }
+
+        do {
+            print("Appel API avec offset : \(currentOffset), limite : 20")
+            let newPokemon = try await pokemonFacade.getPaginatedPokemon(offset: currentOffset, limit: 20)
+
+            await MainActor.run {
+                if !newPokemon.isEmpty {
+                    let uniquePokemon = newPokemon.filter { newPokemon in
+                        !allPokemonList.contains { $0.id == newPokemon.id }
+                    }
+                    allPokemonList.append(contentsOf: uniquePokemon)
+                    filteredPokemonList = allPokemonList
+
+                    // Mise à jour de l'offset uniquement si des Pokémon uniques sont ajoutés
+                    currentOffset += uniquePokemon.count
+                    print("Nouveaux Pokémon chargés : \(uniquePokemon.count), Offset mis à jour : \(currentOffset)")
+                } else {
+                    print("Aucun nouveau Pokémon à ajouter")
+                }
+            }
+        } catch {
+            print("Erreur lors du chargement des Pokémon supplémentaires : \(error)")
+        }
+    }
+
+
+
     private func selectPokemon(pokemon: PKMPokemon) async {
         await MainActor.run {
             selectedPokemon = pokemon
@@ -140,14 +186,28 @@ struct MainMenu: View {
     }
 
     private func updateFilteredList(query: String) async {
-        await MainActor.run {
-            if query.isEmpty {
+        guard !query.isEmpty else {
+            // Si la recherche est vide, réinitialise à la liste complète
+            await MainActor.run {
                 filteredPokemonList = allPokemonList
-            } else {
-                filteredPokemonList = allPokemonList.filter { $0.name?.lowercased().contains(query.lowercased()) ?? false }
             }
+            return
         }
+
+        do {
+            isLoading = true
+
+            let results = try await pokemonFacade.searchPokemon(by: query, existingPokemon: allPokemonList)
+            await MainActor.run {
+                filteredPokemonList = results
+            }
+        } catch {
+            print("Erreur lors de la recherche de Pokémon : \(error)")
+        }
+            isLoading = false
+        
     }
+
 
     private func fetchPokemonDetails(from resources: [PKMNamedAPIResource<PKMPokemon>]) async throws -> [PKMPokemon] {
         return try await withThrowingTaskGroup(of: PKMPokemon?.self) { group in
@@ -193,3 +253,8 @@ extension String {
     }
 }
 
+extension PKMPokemon: @retroactive Equatable {
+    public static func == (lhs: PKMPokemon, rhs: PKMPokemon) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
