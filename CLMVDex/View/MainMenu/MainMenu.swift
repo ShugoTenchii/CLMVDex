@@ -43,6 +43,7 @@ struct MainMenu: View {
                     }) {
                         Image(EnumAssets.add.rawValue)
                             .resizable()
+                            .foregroundStyle(Color(EnumColor.noBackground.rawValue))
                             .scaledToFit()
                             .frame(width: 30, height: 30)
                     }

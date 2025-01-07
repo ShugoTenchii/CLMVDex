@@ -15,8 +15,9 @@ struct ClickableSVG: View {
 
     var body: some View {
         Button(action: action) {
-            Image(svgName ?? EnumAssets.pokeball.rawValue)
+            Image(svgName)
                 .resizable()
+                .foregroundStyle(Color(EnumColor.noBackground.rawValue))
                 .scaledToFit()
                 .frame(width: height, height: weight)
         }
