@@ -23,7 +23,7 @@ struct SearchBar: View {
         .frame(height: 43)
         .padding(.horizontal, 15)
         .background(
-            RoundedRectangle(cornerRadius: 30)
+            RoundedRectangle(cornerRadius: 17)
                 .fill(Color(EnumColor.background.rawValue))
                 .stroke(
                     LinearGradient(
