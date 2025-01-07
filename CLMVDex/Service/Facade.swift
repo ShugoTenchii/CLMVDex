@@ -29,7 +29,6 @@ class Facade {
         favoriteManager.addFavorite(from: pokemon)
     }
 
-    
     /// Supprime un Pokémon des favoris
     func removePokemonFromFavorites(byId id: Int) {
         favoriteManager.removeFavorite(byId: id)
@@ -42,6 +41,10 @@ class Facade {
     
     /// Récupère les détails d'un Pokémon favori via l'API
     func getFavoriteDetails(byId id: Int) async throws -> PKMPokemon {
+        return try await service.fetchPokemon(byId: id)
+    }
+    
+    func getPokemonById(byId id: Int) async throws -> PKMPokemon{
         return try await service.fetchPokemon(byId: id)
     }
 }

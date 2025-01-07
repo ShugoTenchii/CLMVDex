@@ -30,18 +30,21 @@ struct MesFavoris: View {
             } else if favoritePokemons.isEmpty {
                 Text("Vous n'avez pas encore ajouté de Pokémon aux favoris.")
                     .font(Font.custom("Jost", size: 18))
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color(EnumColor.noBackground.rawValue))
                     .padding(.top, 50)
             } else {
-                ScrollView {
-                    VStack(spacing: 20) {
-                        ForEach(favoritePokemons, id: \.id) { pokemon in
-                            pokemonRow(for: pokemon)
-                        }
+                List {
+                    
+                    ForEach(favoritePokemons, id: \.id) { pokemon in
+                        pokemonRow(for: pokemon)
+                            .frame(maxWidth: .infinity)
                     }
-                    .padding(.horizontal, 12)
-                    .padding(.top, 20)
+                    .listRowBackground(
+                        Capsule()
+                            .fill(Color(EnumColor.background.rawValue)))
                 }
+                .listStyle(PlainListStyle()) 
+                .frame(maxWidth: .infinity)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -118,6 +121,7 @@ struct MesFavoris: View {
         MylittleCard(frameWidth: .infinity, frameHeight: 90) {
             HStack {
                 AsyncImage(url: URL(string: pokemon.sprites?.frontDefault ?? ""))
+                    .frame(width: 90, height: 90)
                 Spacer()
                 VStack {
                     HStack {
@@ -135,9 +139,19 @@ struct MesFavoris: View {
                     }
                     .padding(.horizontal, 20)
                 }
+                .frame( height: 90)
             }
-            .padding(.horizontal, 12)
+            .shadow(color: Color(EnumColor.shadow2.rawValue), radius: 9, x: -9, y: -9)
+            .shadow(color: Color(EnumColor.shadow3.rawValue), radius: 9, x: 9, y: 9)
             .frame(maxWidth: .infinity, maxHeight: 90)
+            .swipeActions(edge: .trailing) {
+                Button(role: .destructive) {
+                    pokemonFacade.removePokemonFromFavorites(byId: pokemon.id!)
+                } label: {
+                    Label("Supprimé", systemImage: "trash")
+                }
+                .tint(.red)
+            }
         }
     }
 

@@ -35,7 +35,10 @@ struct MainMenu: View {
                     Button(action: {
                         Task {
                             try? await pokemonFacade.addPokemonToFavorites(byId: pokemon.id ?? 0)
+                            
                             print("Ajouté aux favoris : \(pokemon.name ?? "Inconnu")")
+                            var pokemon = try? await pokemonFacade.getPokemonById(byId: pokemon.id ?? 0)
+                            print(pokemon?.species?.name)
                         }
                     }) {
                         Image(EnumAssets.add.rawValue)
@@ -46,12 +49,13 @@ struct MainMenu: View {
                     .buttonStyle(MyButtonStyle())
                 }
             }
+            .padding(.top, 15)
 
             Spacer()
             
-            EvolutionCard()
+            //EvolutionCard()
             
-            Spacer()
+            //Spacer()
 
             // Recherche et carrousel des Pokémon
             VStack {

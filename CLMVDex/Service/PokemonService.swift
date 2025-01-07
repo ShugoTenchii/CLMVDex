@@ -16,7 +16,7 @@ class PokemonService {
         var allPokemon: [PKMNamedAPIResource<PKMPokemon>] = []
 
         // Charger la première page
-        var pagedResult = try await api.pokemonService.fetchPokemonList(paginationState: .initial(pageLimit: 100), )
+        var pagedResult = try await api.pokemonService.fetchPokemonList(paginationState: .initial(pageLimit: 100))
 
         // Ajouter les résultats de la première page
         if let results = pagedResult.results as? [PKMNamedAPIResource<PKMPokemon>] {

@@ -15,10 +15,7 @@ struct CLMVDexApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $path) {
-                            ZStack {
-                                Color("Background")
-                                    .edgesIgnoringSafeArea(.all)
-
+                            ScrollView {
                                 VStack {
                                     Header(pokemonFacade: pokemonFacade, path: $path) // Passe la pile à Header
                                         .environmentObject(themeManager)
@@ -31,6 +28,8 @@ struct CLMVDexApp: App {
                                 .padding(.horizontal, 12)
                                 .padding(.top, 20)
                             }
+                            .background(Color(EnumColor.background.rawValue))
+                            .frame(width: .infinity, height: .infinity)
                             .navigationDestination(for: EnumPage.self) { page in
                                 switch page {
                                 case .mainMenu:
