@@ -27,10 +27,8 @@ struct CLMVDexApp: App {
                                 }
                                 .padding(.horizontal, 12)
                                 .padding(.top, 20)
-                            }
-                            .background(Color(EnumColor.background.rawValue))
-                            .frame(width: .infinity, height: .infinity)
-                            .navigationDestination(for: EnumPage.self) { page in
+                            }                            .background(Color(EnumColor.background.rawValue))
+                                .navigationDestination(for: EnumPage.self) { page in
                                 switch page {
                                 case .mainMenu:
                                     MainMenu(path: $path, pokemonFacade: pokemonFacade)

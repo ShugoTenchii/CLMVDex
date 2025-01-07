@@ -19,14 +19,11 @@ struct CarouselView: View {
                 ForEach(pokemonList, id: \.id) { pokemon in
                     pokemonCard(for: pokemon)
                 }
-
-                // Vue invisible pour déclencher `onLoadMore`
                 Color.clear
                     .frame(width: 1, height: 1)
                     .modifier(DetectIsOnScreen())
                     .onPreferenceChange(IsOnScreenKey.self) { isVisible in
                         if isVisible == true {
-                            print("Dernier élément visible, déclenche onLoadMore")
                             onLoadMore()
                         }
                     }
@@ -73,7 +70,7 @@ struct DetectIsOnScreen: ViewModifier {
             content
                 .preference(
                     key: IsOnScreenKey.self,
-                    value: reader.frame(in: .global).maxX > UIScreen.main.bounds.width
+                    value: reader.frame(in: .global).maxX >= 0 && reader.frame(in: .global).minX <= UIScreen.main.bounds.width
                 )
         }
     }
