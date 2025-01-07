@@ -10,7 +10,6 @@ import PokemonAPI
 class Facade {
     static let shared = Facade()
     
-//    private let cache = PokemonCache()
     private let service = PokemonService()
     private let favoriteManager = FavoritePokemonManager()
     
@@ -23,14 +22,6 @@ class Facade {
     func searchPokemon(by query: String, existingPokemon: [PKMPokemon]) async throws -> [PKMPokemon] {
         return await service.searchPokemon(by: query, in: existingPokemon)
     }
-
-//    func isCacheUpToDate(expectedCount: Int) -> Bool {
-//        return cache.isCacheUpToDate(expectedCount: expectedCount)
-//    }
-//
-//    func clearCache() {
-//        cache.clearCache()
-//    }
 
     /// Ajoute un Pokémon aux favoris
     func addPokemonToFavorites(byId id: Int) async throws {
