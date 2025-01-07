@@ -23,21 +23,21 @@ class Facade {
     func searchPokemon(by query: String, existingPokemon: [PKMPokemon]) async throws -> [PKMPokemon] {
         return await service.searchPokemon(by: query, in: existingPokemon)
     }
-    
+
 //    func isCacheUpToDate(expectedCount: Int) -> Bool {
 //        return cache.isCacheUpToDate(expectedCount: expectedCount)
 //    }
-//    
+//
 //    func clearCache() {
 //        cache.clearCache()
 //    }
-    
+
     /// Ajoute un Pokémon aux favoris
     func addPokemonToFavorites(byId id: Int) async throws {
         let pokemon = try await service.fetchPokemon(byId: id)
         favoriteManager.addFavorite(from: pokemon)
     }
-    
+
     /// Supprime un Pokémon des favoris
     func removePokemonFromFavorites(byId id: Int) {
         favoriteManager.removeFavorite(byId: id)
@@ -52,7 +52,11 @@ class Facade {
     func getFavoriteDetails(byId id: Int) async throws -> PKMPokemon {
         return try await service.fetchPokemon(byId: id)
     }
-    
+
+    func getPokemonById(byId id: Int) async throws -> PKMPokemon{
+        return try await service.fetchPokemon(byId: id)
+    }
+
     func getPaginatedPokemon(offset: Int, limit: Int) async throws -> [PKMPokemon] {
         return try await service.fetchPokemonByPage(offset: offset, limit: limit)
     }

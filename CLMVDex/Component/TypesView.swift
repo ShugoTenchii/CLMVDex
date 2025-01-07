@@ -13,7 +13,7 @@ struct TypesView: View {
     
     var body: some View {
         HStack{
-            if(!Type2.isEmpty){
+            if(!Type2.isEmpty && Type2 != Type1){
                 Image(Type2)
                     .resizable()
                     .scaledToFit()

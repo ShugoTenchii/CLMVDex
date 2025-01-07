@@ -37,23 +37,28 @@ struct MainMenu: View {
                     Button(action: {
                         Task {
                             try? await pokemonFacade.addPokemonToFavorites(byId: pokemon.id ?? 0)
+
                             print("Ajouté aux favoris : \(pokemon.name ?? "Inconnu")")
+                            var pokemon = try? await pokemonFacade.getPokemonById(byId: pokemon.id ?? 0)
+                            print(pokemon?.species?.name)
                         }
                     }) {
                         Image(EnumAssets.add.rawValue)
                             .resizable()
+                            .foregroundStyle(Color(EnumColor.noBackground.rawValue))
                             .scaledToFit()
                             .frame(width: 30, height: 30)
                     }
                     .buttonStyle(MyButtonStyle())
                 }
             }
+            .padding(.top, 15)
 
             Spacer()
-            
-            EvolutionCard()
-            
-            Spacer()
+
+            //EvolutionCard()
+
+            //Spacer()
 
             // Recherche et carrousel des Pokémon
             VStack {
@@ -100,9 +105,6 @@ struct MainMenu: View {
                 .padding(.horizontal, 30)
 
                 Spacer()
-
-//                Image(EnumAssets.pokeball.rawValue) // Utiliser une vraie image si possible
-//                    .resizable()
                 AsyncImage(url: URL(string: pokemon.sprites?.frontDefault ?? ""))
                     .scaledToFit()
                     .frame(width: 200, height: 200)
@@ -121,11 +123,9 @@ struct MainMenu: View {
         }
     }
 
-
-
     private func loadInitialPokemon() async {
         guard allPokemonList.isEmpty else { return } // Ne recharge pas si la liste existe déjà
-        
+
         do {
             print("Chargement initial des Pokémon...")
             let pokemonResources = try await pokemonFacade.getPaginatedPokemon(offset: 0, limit: 20)
@@ -205,7 +205,7 @@ struct MainMenu: View {
             print("Erreur lors de la recherche de Pokémon : \(error)")
         }
             isLoading = false
-        
+
     }
 
 

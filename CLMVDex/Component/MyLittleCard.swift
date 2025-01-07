@@ -34,8 +34,6 @@ struct MylittleCard<Content: View>: View {
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing)
                     , lineWidth: 1)
-                .shadow(color: Color(EnumColor.shadow2.rawValue), radius: 9, x: -9, y: -9)
-                .shadow(color: Color(EnumColor.shadow1.rawValue), radius: 9, x: 9, y: 9)
             
         )
     }
