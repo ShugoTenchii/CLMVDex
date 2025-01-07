@@ -71,7 +71,6 @@ struct MainMenu: View {
                         await selectPokemon(pokemon: pokemon)
                     }
                 }
-                .padding(.top, 15)
             }
             .padding(.top, 15)
         }
@@ -98,9 +97,6 @@ struct MainMenu: View {
                 .padding(.horizontal, 30)
 
                 Spacer()
-
-//                Image(EnumAssets.pokeball.rawValue) // Utiliser une vraie image si possible
-//                    .resizable()
                 AsyncImage(url: URL(string: pokemon.sprites?.frontDefault ?? ""))
                     .scaledToFit()
                     .frame(width: 200, height: 200)
