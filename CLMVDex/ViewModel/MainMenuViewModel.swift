@@ -11,6 +11,7 @@ import PokemonAPI
 
 @MainActor
 class MainMenuViewModel: ObservableObject {
+    @Published var isSearching: Bool = false
     @Published var allPokemonList: [PKMPokemon] = [] // Liste complète de Pokémon
     @Published var filteredPokemonList: [PKMPokemon] = [] // Liste filtrée de Pokémon
     @Published var selectedPokemon: PKMPokemon? // Pokémon actuellement sélectionné
@@ -20,6 +21,7 @@ class MainMenuViewModel: ObservableObject {
     public let pokemonFacade: Facade
     private var currentOffset: Int = 0
     private let pageSize: Int = 20
+    private var currentSearchTask: Task<Void, Never>? // Tâche de recherche en cours
 
     init(pokemonFacade: Facade) {
         self.pokemonFacade = pokemonFacade
@@ -70,20 +72,32 @@ class MainMenuViewModel: ObservableObject {
 
     /// Recherche de Pokémon par texte
     func updateFilteredList(query: String) async {
+        currentSearchTask?.cancel() // Annule toute tâche en cours
+        
         guard !query.isEmpty else {
-            filteredPokemonList = allPokemonList
+            await MainActor.run {
+                isSearching = false // Fin de la recherche
+                filteredPokemonList = allPokemonList // Réinitialise la liste filtrée
+            }
             return
         }
 
-        do {
-            isLoading = true
-            let results = try await pokemonFacade.searchPokemon(by: query, existingPokemon: allPokemonList)
-            filteredPokemonList = results
-        } catch {
-            print("Erreur lors de la recherche de Pokémon : \(error)")
+        isSearching = true // Début de la recherche
+
+        currentSearchTask = Task {
+            do {
+                let results = try await pokemonFacade.searchPokemon(by: query, existingPokemon: allPokemonList)
+                guard !Task.isCancelled else { return }
+
+                await MainActor.run {
+                    filteredPokemonList = results
+                }
+            } catch {
+                print("Erreur lors de la recherche de Pokémon : \(error)")
+            }
         }
-        isLoading = false
     }
+
 
     /// Sélection d'un Pokémon
     func selectPokemon(pokemon: PKMPokemon) {

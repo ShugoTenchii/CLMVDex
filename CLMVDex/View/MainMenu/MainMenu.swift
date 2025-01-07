@@ -66,7 +66,10 @@ struct MainMenu: View {
                     },
                     onLoadMore: {
                         Task {
-                            await viewModel.loadMorePokemon()
+                            // Charge uniquement si aucune recherche n'est en cours
+                            if !viewModel.isSearching {
+                                await viewModel.loadMorePokemon()
+                            }
                         }
                     }
                 )

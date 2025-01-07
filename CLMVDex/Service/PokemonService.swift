@@ -59,23 +59,25 @@ class PokemonService {
         return try await api.pokemonService.fetchPokemon(id)
     }
 
-    func searchPokemon(by query: String, in existingPokemon: [PKMPokemon]) async -> [PKMPokemon] {
+    func searchPokemon(by query: String, existingPokemon: [PKMPokemon]) async -> [PKMPokemon] {
         // Filtrage local immédiat
-        let localResults = existingPokemon.filter { $0.name?.lowercased().contains(query.lowercased()) ?? false }
+        var localResults = existingPokemon.filter { $0.name?.lowercased().contains(query.lowercased()) ?? false }
         
-        // Requête API après un délai (si l'utilisateur s'arrête de taper)
+        // Requête API pour des résultats supplémentaires
         do {
             let fetchedPokemon = try await fetchPokemon(byName: query.lowercased())
             
-            // Retourner les résultats combinés sans doublons
-            return localResults + [fetchedPokemon].filter { newPokemon in
-                !localResults.contains(where: { $0.id == newPokemon.id })
+            // Ajouter le Pokémon récupéré s'il n'est pas déjà présent
+            if !localResults.contains(where: { $0.id == fetchedPokemon.id }) {
+                localResults.append(fetchedPokemon)
             }
         } catch {
             print("Erreur lors de la récupération du Pokémon via l'API : \(error)")
-            return localResults // En cas d'erreur API, retour des résultats locaux
         }
+        print(localResults)
+        return localResults
     }
+
 
     /// Récupère un Pokémon spécifique par son nom
     func fetchPokemon(byName name: String) async throws -> PKMPokemon {

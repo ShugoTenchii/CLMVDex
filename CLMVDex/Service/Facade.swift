@@ -20,7 +20,7 @@ class Facade {
     
     /// Recherche des Pokémon par nom ou partie de nom
     func searchPokemon(by query: String, existingPokemon: [PKMPokemon]) async throws -> [PKMPokemon] {
-        return await service.searchPokemon(by: query, in: existingPokemon)
+        return await service.searchPokemon(by: query, existingPokemon: existingPokemon)
     }
 
     /// Ajoute un Pokémon aux favoris
